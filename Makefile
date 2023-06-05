@@ -1,5 +1,4 @@
 NUM_JOBS=2
-GENERATOR=Ninja
 BUILD_DIR=build/
 BUILD_TYPE=Debug
 
@@ -10,7 +9,7 @@ CMAKE_GEN_FLAGS=
 CMAKE_BUILD_FLAGS=
 
 all:
-	@cmake -L -S ./ -B $(BUILD_DIR) -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -G "$(GENERATOR)" $(CMAKE_GEN_FLAGS)
+	@cmake -L -S ./ -B $(BUILD_DIR) -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) $(CMAKE_GEN_FLAGS)
 	@cmake --build $(BUILD_DIR) --config=$(BUILD_TYPE) --parallel $(NUM_JOBS) $(CMAKE_BUILD_FLAGS)
 
 clean:

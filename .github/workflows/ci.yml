@@ -15,7 +15,7 @@ jobs:
     - uses: ilammy/setup-nasm@v1
 
     - name: Generate Build Files & Build
-      run: make all GENERATOR=Ninja BUILD_TYPE=Release NUM_JOBS=4
+      run: make all BUILD_TYPE=Release NUM_JOBS=4
 
     - uses: actions/upload-artifact@v3
       with:
