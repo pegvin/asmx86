@@ -1,29 +1,20 @@
-AS:=nasm
-LD:=ld
+NUM_JOBS=2
+GENERATOR=Ninja
+BUILD_DIR=build/
+BUILD_TYPE=Debug
 
-A_FLAGS:=-felf64
-LD_FLAGS:=
+# These Flags are passed to Cmake When Generating Build Files
+CMAKE_GEN_FLAGS=
 
-ODIR     = build
-BIN      = main.elf
-SRCS_ASM = $(wildcard src/*.asm)
-OBJECTS  = $(SRCS_ASM:.asm=.o)
-OBJECTS := $(patsubst %,$(ODIR)/%,$(OBJECTS))
-DEPENDS := $(OBJECTS:.o=.d)
+# These Flags are passed to Cmake When Building The Project
+CMAKE_BUILD_FLAGS=
 
--include $(DEPENDS)
-
-$(ODIR)/%.o: %.asm
-	@echo "AS  -" $<
-	@mkdir -p "$$(dirname "$@")"
-	@$(AS) $< -MD $($@:.o=.d) -o $@ $(A_FLAGS)
-
-$(BIN): $(OBJECTS)
-	@echo Linking $@
-	@$(LD) -o $@ $(OBJECTS) $(LD_FLAGS)
-
-all: $(BIN)
+all:
+	@cmake -L -S ./ -B $(BUILD_DIR) -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) -G "$(GENERATOR)" $(CMAKE_GEN_FLAGS)
+	@cmake --build $(BUILD_DIR) --config=$(BUILD_TYPE) --parallel $(NUM_JOBS) $(CMAKE_BUILD_FLAGS)
 
 clean:
-	@$(RM) -r $(BIN) $(ODIR) $(DEPENDS)
-	@echo - Cleaned
+	@$(RM) -r $(BUILD_DIR)
+
+run: all
+	@./build/myasm
