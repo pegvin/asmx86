@@ -12,6 +12,6 @@ else()
 	message(FATAL_ERROR "Unknown Target System: \"" ${CMAKE_SYSTEM} "\"!")
 endif()
 
-project(myasm ASM_NASM)
+project(myasm C ASM_NASM)
 file(GLOB_RECURSE SRC_FILES src/main.asm)
 add_executable(myasm ${SRC_FILES})
