@@ -1,16 +1,17 @@
-SOURCE=src
+SOURCES=$(wildcard src/**/main.asm)
 BUILD=build
 
-all: $(SOURCE)/*
+OBJECTS=$(SOURCES:.asm=.o)
+
+%.o: %.asm
 	@mkdir -p $(BUILD)
-
-	$(eval DIRNAME=$(notdir $^))
-	$(eval SOURCE=$(SOURCE)/$(DIRNAME)/main.asm)
+	$(eval DIRNAME=$(notdir $(realpath $(dir $<))))
 	$(eval OUTPUT=$(BUILD)/$(DIRNAME).elf)
-
-	@echo $(SOURCE) "->" $(OUTPUT)
-	@nasm -f elf32 $(SOURCE) -o $(OUTPUT).o
+	@echo $< "->" $(OUTPUT)
+	@nasm -f elf32 $< -o $(OUTPUT).o
 	@ld -m elf_i386 $(OUTPUT).o -o $(OUTPUT)
+
+all: $(OBJECTS)
 
 clean:
 	@$(RM) -rvf $(BUILD)
