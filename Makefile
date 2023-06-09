@@ -1,19 +1,19 @@
-NUM_JOBS=2
-BUILD_DIR=build/
-BUILD_TYPE=Debug
+SOURCE=src
+BUILD=build
 
-# These Flags are passed to Cmake When Generating Build Files
-CMAKE_GEN_FLAGS=
+all: $(SOURCE)/*
+	@mkdir -p $(BUILD)
 
-# These Flags are passed to Cmake When Building The Project
-CMAKE_BUILD_FLAGS=
+	$(eval DIRNAME=$(notdir $^))
+	$(eval SOURCE=$(SOURCE)/$(DIRNAME)/main.asm)
+	$(eval OUTPUT=$(BUILD)/$(DIRNAME).elf)
 
-all:
-	@cmake -L -S ./ -B $(BUILD_DIR) -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) $(CMAKE_GEN_FLAGS)
-	@cmake --build $(BUILD_DIR) --config=$(BUILD_TYPE) --parallel $(NUM_JOBS) $(CMAKE_BUILD_FLAGS)
+	@echo $(SOURCE) "->" $(OUTPUT)
+	@nasm -f elf32 $(SOURCE) -o $(OUTPUT).o
+	@ld -m elf_i386 $(OUTPUT).o -o $(OUTPUT)
 
 clean:
-	@$(RM) -r $(BUILD_DIR)
+	@$(RM) -rvf $(BUILD)
 
 run: all
 	@./build/myasm

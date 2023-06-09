@@ -6,19 +6,16 @@ on:
 
 jobs:
   build:
-    strategy:
-      matrix:
-        os: [ ubuntu-22.04 ]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-22.04
     steps:
     - uses: actions/checkout@v3
     - uses: ilammy/setup-nasm@v1
 
-    - name: Generate Build Files & Build
-      run: make all BUILD_TYPE=Release NUM_JOBS=4
+    - name: Build
+      run: make all
 
     - uses: actions/upload-artifact@v3
       with:
-        name: ${{ matrix.os }}-build
+        name: build-artifacts
         path: build/
         if-no-files-found: error
