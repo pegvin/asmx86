@@ -9,7 +9,7 @@ OBJECTS=$(SOURCES:.asm=.o)
 	$(eval OUTPUT=$(BUILD)/$(DIRNAME).elf)
 	@echo $< "->" $(OUTPUT)
 	@nasm -f elf32 $< -o $(OUTPUT).o
-	@ld -L/libx32/ -L/usr/lib32/ -lc -e _start -dynamic-linker /lib/ld-linux.so.2 -m elf_i386 $(OUTPUT).o -o $(OUTPUT)
+	@ld -L/usr/lib32/ -lc -e _start -dynamic-linker /lib/ld-linux.so.2 -m elf_i386 $(OUTPUT).o -o $(OUTPUT)
 
 all: $(OBJECTS)
 
