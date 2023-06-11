@@ -14,7 +14,7 @@ jobs:
     - name: Install libc x86
       run: |
         sudo apt-get update
-        sudo apt-get install libc6-x32
+        sudo apt-get install gcc-multilib
 
     - name: Build
       run: make all
